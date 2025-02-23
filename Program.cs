@@ -1,8 +1,10 @@
 ﻿// See https://aka.ms/new-console-template for more information
 // Create main context
+using DAITCore;
 using ILGPU;
 using ILGPU.IR.Values;
 using ILGPU.Runtime;
+using ILGPU.Runtime.OpenCL;
 
 #region Accelerated algorithm
 
@@ -74,8 +76,9 @@ string version = "0.0.1a";
 try
 {
     HttpClient cli = new HttpClient();
-    HttpResponseMessage resp = cli.GetAsync("https://miningpool.dait.dev/GetLatestVersion.ashx").Result;
+    HttpResponseMessage resp = cli.GetAsync("https://miningpool.dait.dev/GetLatestVersion.ashx?a=" + version).Result;
     string latestVersion = resp.Content.ReadAsStringAsync().Result;
+    latestVersion = latestVersion.Trim('"');
     if (version != latestVersion)
     {
         Console.WriteLine($"Version {version}, latest version: {latestVersion}. Please update DAITCore application.");
@@ -112,15 +115,36 @@ if (!File.Exists("PubKey.txt"))
 
 using (var context = Context.CreateDefault())
 {
+    int selectedAccelerator = -1;
     // For each available device...
+    int i = 0;
     foreach (var device in context)
     {
         // Create accelerator for the given device.
         // Note that all accelerators have to be disposed before the global context is disposed
-        using var accelerator = device.CreateAccelerator(context);
-        Console.WriteLine($"Accelerator: {device.AcceleratorType}, {accelerator.Name}");
-        PrintAcceleratorInfo(accelerator);
+        using var _accelerator = device.CreateAccelerator(context);
+        Console.WriteLine($"Accelerator: [{i}]: {device.AcceleratorType}, {_accelerator.Name}");
+        PrintAcceleratorInfo(_accelerator);
         Console.WriteLine();
+        i++;
+    }
+    Console.Write("Select accelerator (1,2,3,...) [0]:");
+    string input = Console.ReadLine();
+    if (input == "")
+        input = "0";
+    selectedAccelerator = Convert.ToInt32(input);
+    Accelerator accelerator = context.Devices[selectedAccelerator].CreateAccelerator(context);
+
+    while (true)
+    {
+        try
+        {
+            var (taskId, a, b) = await TaskFetcher.FetchMatricesAsync(minerPubKey, 5000, 5000, 5000, 5000);
+            Console.WriteLine($"Get task: {taskId}, awaiting results.");
+            var acceleratedResult = MatrixMultiplyAccelerated(accelerator, a, b);
+            await TaskFetcher.SubmitResultAsync(taskId, acceleratedResult, minerPubKey);
+            Console.WriteLine($"Task: {taskId}, results submitted. Waiting confirmations.");
+        }
+        catch (Exception e) { Console.WriteLine(e.ToString()); }
     }
 }
-
