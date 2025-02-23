@@ -44,13 +44,13 @@ dotnet run
 
 ⚙ Configuration
 
-Edit the config.json file to set up:
+Edit the PubKey.txt file to set up:
 
 Wallet Address: Where mining rewards will be sent.
 
-GPU Settings: Specify GPU usage limits.
+(later) GPU Settings: Specify GPU usage limits.
 
-Network Node: Connect to the distributed AI training network.
+(later) Network Node: Connect to the distributed AI training network.
 
 🔄 How It Works
 
