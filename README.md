@@ -33,7 +33,7 @@ CUDA Toolkit (for NVIDIA GPUs)
 🛠 Installation
 
 # Clone the Repository
-git clone https://github.com/your-repo/mining-ai.git
+git clone [https://github.com/your-repo/mining-ai.git](https://github.com/dait-dev/DAITMiner.git)
 cd mining-ai
 
 # Install Dependencies
