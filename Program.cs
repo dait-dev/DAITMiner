@@ -112,6 +112,10 @@ if (!File.Exists("PubKey.txt"))
     minerPubKey = Console.ReadLine();
     File.WriteAllText("PubKey.txt", minerPubKey);
 }
+else
+{
+    minerPubKey = File.ReadAllText("PubKey.txt");
+}
 
 using (var context = Context.CreateDefault())
 {
@@ -139,7 +143,7 @@ using (var context = Context.CreateDefault())
     {
         try
         {
-            var (taskId, a, b) = await TaskFetcher.FetchMatricesAsync(minerPubKey, 5000, 5000, 5000, 5000);
+            var (taskId, a, b) = await TaskFetcher.FetchMatricesAsync(minerPubKey, 1000, 1000, 1000, 1000);
             Console.WriteLine($"Get task: {taskId}, awaiting results.");
             var acceleratedResult = MatrixMultiplyAccelerated(accelerator, a, b);
             await TaskFetcher.SubmitResultAsync(taskId, acceleratedResult, minerPubKey);
