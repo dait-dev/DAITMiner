@@ -33,14 +33,18 @@ CUDA Toolkit (for NVIDIA GPUs)
 🛠 Installation
 
 # Clone the Repository
-git clone [https://github.com/your-repo/mining-ai.git](https://github.com/dait-dev/DAITMiner.git)
-cd mining-ai
+git clone [https://github.com/dait-dev/DAITMiner.git](https://github.com/dait-dev/DAITMiner.git)
+or
+download DAITCore.zip
+
+cd bin/Debug/net8.0
+DAITCore.exe
 
 # Install Dependencies
-dotnet restore
+https://dotnet.microsoft.com/en-us/download/dotnet/8.0
 
 # Run the Miner
-dotnet run
+DAITCore.exe
 
 ⚙ Configuration
 
@@ -69,6 +73,13 @@ Users receive rewards based on their contribution.
 ✅ Cross-platform compatibility (Linux, macOS)
 
 ✅ Enhanced network optimizations and security features
+
+✅ Support for other types of algorithms
+
+✅ Network traffic optimization
+
+✅ Publication of the source code and interaction mechanism for the network nodes
+
 
 🤝 Contributing
 
