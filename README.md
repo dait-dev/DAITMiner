@@ -34,6 +34,9 @@ CUDA Toolkit (for NVIDIA GPUs)
 
 # Clone the Repository
 git clone [https://github.com/your-repo/mining-ai.git](https://github.com/dait-dev/DAITMiner.git)
+or
+download DAITCore.zip
+
 cd bin/Debug/net8.0
 DAITCore.exe
 
